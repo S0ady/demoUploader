@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+<html>
 <head>
   <title>File API</title>
   <style>
@@ -41,7 +42,7 @@ holder.ondrop = function (e) {
     holder.style.background = 'url(' + event.target.result + ') no-repeat center';
   };
   console.log(file);
-  //reader.readAsDataURL(file);
+  reader.readAsDataURL(file);
   addViewURL(file);
   return false;
 };
@@ -59,14 +60,14 @@ function openSession() {
 
 function generateProofScopeURL(file) {
     console.log("this name:" + file.name);
-    url = "http://localhost:9090/portal.cgi?proofscope&url=cloudflow%3A%2F%2F"+file.name;
+    url = "http://localhost:9090/portal.cgi?proofscope&url=cloudflow%3A%2F%2FPP_FILE_STORE%2FPublic%2F"+file.name;
     return true;
 }
 
 function addViewURL(file) {
     if(generateProofScopeURL(file)) {
       var para = document.createElement("P");
-      var t = document.createTextNode("Link:" + url);
+      var t = document.createTextNode("Link: " + url);
       para.appendChild(t);
       document.getElementById("list").appendChild(para);
     } else {
@@ -74,3 +75,4 @@ function addViewURL(file) {
     }
 }
 </script>
+</html>
