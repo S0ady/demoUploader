@@ -1,18 +1,49 @@
-<!DOCTYPE html>
-
-<meta charset="utf-8">
-
-<title>Dropzone simple example</title>
 
 
-<script src="lib/dropzone.js"></script>
-<link rel="stylesheet" href="style/dropzone.css">
+<title>File API</title>
+<style>
+#holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+#holder.hover { border: 10px dashed #333; }
+</style>
+<article>
+  <div id="holder"></div>
+  <p id="status">File API & FileReader API not supported</p>
+  <p>Drag an image from your desktop on to the drop zone above to see the browser read the contents of the file and use it as the background - without uploading the file to any servers.</p>
+</article>
+<script type="text/javascript" src="localhost:9090/portal.cgi?api=js" />
+<script>
+var holder = document.getElementById('holder'),
+    state = document.getElementById('status');
 
+if (typeof window.FileReader === 'undefined') {
+  state.className = 'fail';
+} else {
+  state.className = 'success';
+  state.innerHTML = 'File API & FileReader available';
+}
 
-<p>
-  This is the most minimal example of Dropzone. The upload in this example
-  doesn't work, because there is no actual server to handle the file upload.
-</p>
+holder.ondragover = function () { this.className = 'hover'; return false; };
+holder.ondragend = function () { this.className = ''; return false; };
+holder.ondrop = function (e) {
+  this.className = '';
+  e.preventDefault();
 
-<!-- Change /upload-target to your upload address -->
-<form action="/upload-target" class="dropzone"></form>
+  var file = e.dataTransfer.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    console.log(event.target);
+    holder.style.background = 'url(' + event.target.result + ') no-repeat center';
+  };
+  console.log(file);
+  reader.readAsDataURL(file);
+
+  return false;
+};
+
+// ProofScope Demo
+
+function openSession() {
+  auth.create_session('admin', 'admin')
+  
+}
+</script>
