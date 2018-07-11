@@ -1,16 +1,22 @@
 
+<head>
+  <title>File API</title>
+  <style>
+    #holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+    #holder.hover { border: 10px dashed #333; }
+  </style>
+  <script type="text/javascript" src="localhost:9090/portal.cgi?api=js"></script>
+</head>
 
-<title>File API</title>
-<style>
-#holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
-#holder.hover { border: 10px dashed #333; }
-</style>
-<article>
-  <div id="holder"></div>
-  <p id="status">File API & FileReader API not supported</p>
-  <p>Drag an image from your desktop on to the drop zone above to see the browser read the contents of the file and use it as the background - without uploading the file to any servers.</p>
-</article>
-<script type="text/javascript" src="localhost:9090/portal.cgi?api=js" />
+<body>
+  <article>
+    <div id="holder"></div>
+    <p id="status">File API & FileReader API not supported</p>
+    <p>Drag an image from your desktop on to the drop zone above to see the browser read the contents of the file and use it as the background - without uploading the file to any servers.</p>
+  </article>
+  <div id="list"></div>
+</body>
+
 <script>
 var holder = document.getElementById('holder'),
     state = document.getElementById('status');
@@ -35,15 +41,36 @@ holder.ondrop = function (e) {
     holder.style.background = 'url(' + event.target.result + ') no-repeat center';
   };
   console.log(file);
-  reader.readAsDataURL(file);
-
+  //reader.readAsDataURL(file);
+  addViewURL(file);
   return false;
 };
 
 // ProofScope Demo
 
+var session;
+var url;
+
+/*
 function openSession() {
-  auth.create_session('admin', 'admin')
-  
+  session = auth.create_session('admin', 'admin')
+}
+*/
+
+function generateProofScopeURL(file) {
+    console.log("this name:" + file.name);
+    url = "http://localhost:9090/portal.cgi?proofscope&url=cloudflow%3A%2F%2F"+file.name;
+    return true;
+}
+
+function addViewURL(file) {
+    if(generateProofScopeURL(file)) {
+      var para = document.createElement("P");
+      var t = document.createTextNode("Link:" + url);
+      para.appendChild(t);
+      document.getElementById("list").appendChild(para);
+    } else {
+      console.log("you fucked up!");
+    }
 }
 </script>
